@@ -1,0 +1,61 @@
+{
+  "ship": {
+    "dimensions": {
+      "w": 4,
+      "l": 5
+    },
+    "max_capacity": 20
+  },
+  "vehicles": [
+    {
+      "id": "A",
+      "dimensions": {
+        "w": 1,
+        "l": 2
+      },
+      "shipping_fee": 10,
+      "weight": 4,
+      "eta": 1
+    },
+    {
+      "id": "B",
+      "dimensions": {
+        "w": 2,
+        "l": 3
+      },
+      "shipping_fee": 25,
+      "weight": 9,
+      "eta": 2
+    },
+    {
+      "id": "C",
+      "dimensions": {
+        "w": 2,
+        "l": 2
+      },
+      "shipping_fee": 12,
+      "weight": 5,
+      "eta": 3
+    },
+    {
+      "id": "D",
+      "dimensions": {
+        "w": 1,
+        "l": 4
+      },
+      "shipping_fee": 15,
+      "weight": 6,
+      "eta": 1
+    },
+    {
+      "id": "E",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "shipping_fee": 30,
+      "weight": 11,
+      "eta": 4
+    }
+  ]
+}

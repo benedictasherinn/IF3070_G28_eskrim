@@ -1,0 +1,201 @@
+{
+  "ship": {
+    "dimensions": {
+      "w": 10,
+      "l": 20
+    },
+    "max_capacity": 90
+  },
+  "vehicles": [
+    {
+      "id": "Avanza",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "shipping_fee": 25,
+      "weight": 8,
+      "eta": 5
+    },
+    {
+      "id": "Brio",
+      "dimensions": {
+        "w": 2,
+        "l": 3
+      },
+      "shipping_fee": 18,
+      "weight": 5,
+      "eta": 2
+    },
+    {
+      "id": "Fortuner",
+      "dimensions": {
+        "w": 2,
+        "l": 5
+      },
+      "shipping_fee": 40,
+      "weight": 12,
+      "eta": 4
+    },
+    {
+      "id": "Truk-Engkel",
+      "dimensions": {
+        "w": 3,
+        "l": 6
+      },
+      "shipping_fee": 55,
+      "weight": 18,
+      "eta": 6
+    },
+    {
+      "id": "Pajero",
+      "dimensions": {
+        "w": 2,
+        "l": 5
+      },
+      "shipping_fee": 42,
+      "weight": 12,
+      "eta": 3
+    },
+    {
+      "id": "Xpander",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "shipping_fee": 27,
+      "weight": 8,
+      "eta": 1
+    },
+    {
+      "id": "Bus-Mini",
+      "dimensions": {
+        "w": 3,
+        "l": 7
+      },
+      "shipping_fee": 60,
+      "weight": 20,
+      "eta": 7
+    },
+    {
+      "id": "Motor-1",
+      "dimensions": {
+        "w": 1,
+        "l": 2
+      },
+      "shipping_fee": 5,
+      "weight": 1,
+      "eta": 2
+    },
+    {
+      "id": "Motor-2",
+      "dimensions": {
+        "w": 1,
+        "l": 2
+      },
+      "shipping_fee": 5,
+      "weight": 1,
+      "eta": 4
+    },
+    {
+      "id": "Pickup",
+      "dimensions": {
+        "w": 2,
+        "l": 5
+      },
+      "shipping_fee": 30,
+      "weight": 10,
+      "eta": 3
+    },
+    {
+      "id": "Innova",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "shipping_fee": 32,
+      "weight": 9,
+      "eta": 2
+    },
+    {
+      "id": "Agya",
+      "dimensions": {
+        "w": 2,
+        "l": 3
+      },
+      "shipping_fee": 15,
+      "weight": 5,
+      "eta": 6
+    },
+    {
+      "id": "Elf",
+      "dimensions": {
+        "w": 3,
+        "l": 6
+      },
+      "shipping_fee": 50,
+      "weight": 16,
+      "eta": 5
+    },
+    {
+      "id": "Ertiga",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "shipping_fee": 24,
+      "weight": 8,
+      "eta": 4
+    },
+    {
+      "id": "Hiace",
+      "dimensions": {
+        "w": 2,
+        "l": 6
+      },
+      "shipping_fee": 38,
+      "weight": 11,
+      "eta": 2
+    },
+    {
+      "id": "Truk-Box",
+      "dimensions": {
+        "w": 3,
+        "l": 7
+      },
+      "shipping_fee": 58,
+      "weight": 19,
+      "eta": 5
+    },
+    {
+      "id": "Sedan",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "shipping_fee": 22,
+      "weight": 6,
+      "eta": 3
+    },
+    {
+      "id": "Tronton",
+      "dimensions": {
+        "w": 3,
+        "l": 8
+      },
+      "shipping_fee": 70,
+      "weight": 24,
+      "eta": 6
+    },
+    {
+      "id": "Jeep",
+      "dimensions": {
+        "w": 2,
+        "l": 4
+      },
+      "shipping_fee": 26,
+      "weight": 9,
+      "eta": 2
+    }
+  ]
+}
