@@ -9,7 +9,6 @@ from core import load_problem, Objective, summary, save_json
 from algorithms.simulated_annealing import simulated_annealing
 from algorithms.plots_sa import plot_objective, plot_acceptance, plot_states
 
-
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "output")
 DATA_SMALL = os.path.join(HERE, "data", "sample_small.json")
@@ -66,6 +65,19 @@ def run_alpha(problem, obj):
               f"{max(scores):>4} | {sum(scores)/3:>5.1f} | "
               f"{sum(iters)/3:>8.0f} | {sum(durs)/3:>6.2f}s")
 
+def run_t0(problem, obj):
+    print(f"{'t0':>6} | {'s0':>4} | {'s1':>4} | {'s2':>4} | "
+          f"{'max':>4} | {'avg':>5} | {'dur_avg':>7}")
+    print("-" * 55)
+    for t0 in [5.0, 10.0, 20.0, 50.0, 100.0]:
+        scores, durs = [], []
+        for seed in range(3):
+            res = simulated_annealing(problem, obj, seed=seed, t0=t0)
+            scores.append(res['final_value'])
+            durs.append(res['duration_s'])
+        print(f"{t0:>6} | {scores[0]:>4} | {scores[1]:>4} | {scores[2]:>4} | "
+              f"{max(scores):>4} | {sum(scores)/3:>5.1f} | {sum(durs)/3:>6.2f}s")
+
 def run_scaling():
     print(f"{'dataset':>18} | {'seed':>4} | {'awal':>8} | {'akhir':>5} | "
           f"{'valid':>5} | {'durasi':>6}")
@@ -82,11 +94,11 @@ def run_scaling():
 def main():
     parser = argparse.ArgumentParser(description="Runner SA")
     parser.add_argument("--mode",
-                        choices=["baseline", "consistency", "alpha", "scaling", "all"],
+                        choices=["baseline", "consistency", "alpha", "t0", "scaling", "all"],
                         default="baseline",
                         help="Jenis eksperimen (default: baseline)")
     parser.add_argument("--dataset", default=DATA_DEFAULT,
-                        help="Path dataset JSON (dipakai mode baseline/consistency/alpha)")
+                        help="Path dataset JSON (dipakai mode baseline/consistency/alpha/t0)")
     args = parser.parse_args()
 
     os.makedirs(OUT, exist_ok=True)
@@ -117,6 +129,12 @@ def main():
         obj = Objective(problem)
         print(f"\n== PENGARUH ALPHA (dataset={os.path.basename(args.dataset)}) ==")
         run_alpha(problem, obj)
+
+    if args.mode in ("t0", "all"):
+        problem = load_problem(args.dataset)
+        obj = Objective(problem)
+        print(f"\n== PENGARUH SUHU AWAL T0 (dataset={os.path.basename(args.dataset)}) ==")
+        run_t0(problem, obj)
 
     if args.mode in ("scaling", "all"):
         print(f"\n== SKALABILITAS (small vs medium) ==")
