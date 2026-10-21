@@ -4,20 +4,23 @@ from core import (Problem, State, Objective, random_state, random_neighbor, make
 import matplotlib.pyplot as plt
 
 class GeneticAlgorithm():
-    def __init__(self, problem: Problem, population: int, iteration: int, seed: int):
+    def __init__(self, problem: Problem, population: int, iteration: int, seed: int, prob_mutation: float = 0.1):
         self.problem = problem
-        self.population = population
-        self.iteration = iteration
-        self.seed = seed
+        self.population = population        #jumlah individu di setiap generasi
+        self.iteration = iteration          #jumlah iterasi yang dijalankan
+        self.seed = seed                    #nilai acak agar hasil bisa diulang
+        self.prob_mutation = prob_mutation  #peluang mutasi anak
         self.rng = random.Random(seed)
         self.objective = Objective(problem)
 
     #Fitness function
     def fitness_function(self, state):
+            """Menghitung nilai fitness untuk mengevaluasi kualitas solusi"""
             return self.objective.value(state)
 
     #Initial population
     def create_initial_population(self):
+        """Membuat state acak sebagai populasi awal"""
         population = []
         for _ in range(self.population):
             population.append(random_state(self.problem, self.rng))
@@ -25,6 +28,7 @@ class GeneticAlgorithm():
 
     #Selection function
     def selection(self, population, fitness):
+        """Memilih individu sebagai parent menggunakan Tournament Selection(mengambil 3 individu acak dan memilih individu dengan nilai fitness tertinggi)"""
         selected = []
         tournament_size = min(3, len(population))
         for _ in range (self.population):
@@ -35,6 +39,7 @@ class GeneticAlgorithm():
 
     #Crossover function
     def crossover(self, parent1, parent2):
+        """Melakukan uniform crossover: memilih induk secara acak"""
         child1 = {}
         child2 = {}
         for vehicle_id in self.problem.ids:
@@ -48,9 +53,13 @@ class GeneticAlgorithm():
         
     #Mutation function
     def mutation(self, state: State):
-        return random_neighbor(state, self.rng)
+        """Melakukan mutasi dengan swap kendaraan secara random"""
+        if self.rng.random() < self.prob_mutation:
+            return random_neighbor(state, self.rng)
+        return state
 
     def get_best(self, population, fitness):
+        """Individu terbaik dari populasi"""
         best = max(range(len(population)), key=lambda i: fitness[i])
         return population[best], fitness[best]
     
