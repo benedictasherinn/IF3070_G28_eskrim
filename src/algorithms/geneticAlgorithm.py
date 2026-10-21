@@ -40,17 +40,33 @@ class GeneticAlgorithm():
     #Crossover function
     def crossover(self, parent1, parent2):
         """Melakukan uniform crossover: memilih induk secara acak"""
-        child1 = {}
-        child2 = {}
-        for vehicle_id in self.problem.ids:
-            if self.rng.random() < 0.5:
-                child1[vehicle_id] = parent1.p[vehicle_id]
-                child2[vehicle_id] = parent2.p[vehicle_id]
-            else:
-                child1[vehicle_id] = parent2.p[vehicle_id]
-                child2[vehicle_id] = parent1.p[vehicle_id]
-        return State(self.problem, child1), State(self.problem, child2)
-        
+        ship = self.problem.ship
+        children = []
+        for p1, p2 in ((parent1, parent2), (parent2, parent1)):
+            child = {vehicle_id: None for vehicle_id in self.problem.ids}
+            occupied = set()
+            weight = 0
+            order = list(self.problem.ids)
+            self.rng.shuffle(order)
+            for vehicle_id in order:
+                parents = [p1,p2]
+                if self.rng.random() < 0.5:
+                    parents.reverse()
+                vehicle = self.problem.by[vehicle_id]
+                for parent in parents:
+                    if parent.p[vehicle_id] is None:
+                        continue
+                    cells = parent.cells(vehicle_id)
+                    if (all(0 <= x < ship.cols and 0 <= y < ship.rows for x, y in cells)
+                        and weight + vehicle.weight <= ship.cap
+                        and occupied.isdisjoint(cells)):
+                        child[vehicle_id] = parent.p[vehicle_id]
+                        occupied.update(cells)
+                        weight += vehicle.weight
+                        break
+            children.append(State(self.problem, child))
+        return children[0], children[1]
+
     #Mutation function
     def mutation(self, state: State):
         """Melakukan mutasi dengan swap kendaraan secara random"""
