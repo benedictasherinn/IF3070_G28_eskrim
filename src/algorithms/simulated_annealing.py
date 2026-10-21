@@ -15,7 +15,7 @@ def cooldown_geometric(temp, alpha):
     """Jadwal pendinginan geometrik/suhu berikutnya"""
     return temp * alpha
 
-def simulated_annealing(problem, objective, seed=0, t0=20.0, alpha=0.999, t_min=1e-3, max_iter=30000, stuck_window=200):
+def simulated_annealing(problem, objective, seed=0, t0=100.0, alpha=0.999, t_min=1e-3, max_iter=30000, stuck_window=200):
     rng = random.Random(seed)
     current = random_state(problem, rng)
     current_value = objective.value(current)
