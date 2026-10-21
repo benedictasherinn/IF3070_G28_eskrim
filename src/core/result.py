@@ -1,4 +1,4 @@
-import json
+﻿import json
 import os
 from .objective import is_valid
 
@@ -14,6 +14,8 @@ def make_result(algorithm, objective, initial, final, history, iterations,
         "iterations": iterations,
         "duration_s": round(duration, 4),
         "extra": extra or {},    # data khusus algoritma
+        "initial_placements": dict(initial.p),
+        "final_placements": dict(final.p),
         "initial_render": initial.render(),
         "final_render": final.render(),
     }
@@ -28,3 +30,5 @@ def save_json(res, path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
         json.dump(res, f, indent=2)
+
+

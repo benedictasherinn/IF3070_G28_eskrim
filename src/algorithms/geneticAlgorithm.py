@@ -1,7 +1,6 @@
 import random
 import time
 from core import (Problem, State, Objective, random_state, random_neighbor, make_result)
-import matplotlib.pyplot as plt
 
 class GeneticAlgorithm():
     def __init__(self, problem: Problem, population: int, iteration: int, seed: int, prob_mutation: float = 0.1):
@@ -131,26 +130,3 @@ class GeneticAlgorithm():
         return make_result("Genetic Algorithm", self.objective, initial_state, final_state, history=max_history, iterations=self.iteration, duration=duration, 
                            extra={"population": self.population, "seed": self.seed,
                                   "max_history": max_history, "average_history": average_history})
-
-
-def plot_history(result, path=None):
-    extra = result["extra"]
-    generations = range(len(extra["max_history"]))
-
-    fig = plt.figure()
-    plt.plot(generations, extra["max_history"], label="Maximum")
-    plt.plot(generations, extra["average_history"], label="Average")
-
-    plt.xlabel("Generation")
-    plt.ylabel("Objective Value")
-    plt.title(
-        f"Genetic Algorithm: Population={extra['population']}, "
-        f"Iterations={result['iterations']}"
-    )
-    plt.legend()
-
-    if path:
-        plt.savefig(path, dpi=120)
-        plt.close()
-
-    return fig
