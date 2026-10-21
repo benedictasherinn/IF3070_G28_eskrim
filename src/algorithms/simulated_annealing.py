@@ -25,7 +25,7 @@ def simulated_annealing(problem, objective, seed=0, t0=20.0, alpha=0.999, t_min=
     temp = t0
     iteration = 0
     started_at = time.perf_counter()
-    while iteration < max_iter:
+    while iteration < max_iter and temp > t:
         iteration += 1
         candidate = random_neighbor(current, rng)
         candidate_value = objective.value(candidate)
@@ -37,7 +37,8 @@ def simulated_annealing(problem, objective, seed=0, t0=20.0, alpha=0.999, t_min=
             prob = boltzmann_gate(delta_e, temp)
             if prob > rng.random():
                 current, current_value = candidate, candidate_value
-            temp = cooldown_geometric(temp, alpha)    # turunkan suhu
+            
         objective_trace.append(current_value)
+        temp = cooldown_geometric(temp, alpha)    # turunkan suhu tiap iterasi
 
     return make_result("Simulated Annealing", objective, initial, current, objective_trace, iteration, time.perf_counter() - started_at)
