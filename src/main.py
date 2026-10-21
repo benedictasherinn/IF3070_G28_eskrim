@@ -7,7 +7,7 @@ sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 
 from core import load_problem, Objective, summary, save_json
 from algorithms.simulated_annealing import simulated_annealing
-from algorithms.plots import plot_objective, plot_acceptance
+from algorithms.plots_sa import plot_objective, plot_acceptance, plot_states
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "output")
@@ -23,6 +23,7 @@ def run_sa(problem, obj, out_dir):
         save_json(res, os.path.join(out_dir, f"sa_run{run}.json"))
         plot_objective(res, os.path.join(out_dir, f"sa_run{run}_obj.png"))
         plot_acceptance(res, os.path.join(out_dir, f"sa_run{run}_accept.png"))
+        plot_states(problem, res, os.path.join(out_dir, f"sa_run{run}_states.png"))
         rows.append(("Simulated Annealing", run, res["initial_value"],
                      res["final_value"], res["final_valid"],
                      res["iterations"], res["duration_s"]))
