@@ -19,8 +19,6 @@ def make_result(algorithm, objective, initial, final, history, iterations,
         "iterations": iterations,
         "duration_s": round(duration, 4),
         "extra": extra or {},
-        "initial_render": initial.render(),
-        "final_render": final.render(),
         "initial_placements": _serialize_placements(initial),
         "final_placements": _serialize_placements(final),
     }
