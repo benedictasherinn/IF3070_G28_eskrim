@@ -14,6 +14,8 @@ def make_result(algorithm, objective, initial, final, history, iterations,
         "iterations": iterations,
         "duration_s": round(duration, 4),
         "extra": extra or {},    # data khusus algoritma
+        "initial_placements": dict(initial.p),
+        "final_placements": dict(final.p),
         "initial_render": initial.render(),
         "final_render": final.render(),
     }
