@@ -18,9 +18,11 @@ def make_result(algorithm, objective, initial, final, history, iterations,
         "history": history,
         "iterations": iterations,
         "duration_s": round(duration, 4),
-        "extra": extra or {},
+        "extra": extra or {},    # data khusus algoritma
         "initial_placements": _serialize_placements(initial),
         "final_placements": _serialize_placements(final),
+        "initial_render": initial.render(),
+        "final_render": final.render(),
     }
 
 

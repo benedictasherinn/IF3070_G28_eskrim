@@ -12,7 +12,9 @@ from core import load_problem, Objective, summary, save_json
 from algorithms.simulated_annealing import simulated_annealing
 from algorithms.plots_sa import plot_objective, plot_acceptance, plot_states as plot_states_sa
 from algorithms.geneticAlgorithm import GeneticAlgorithm
-from algorithms.plotGenetic import plot_history, plot_states as plot_states_ga
+from algorithms.plotGenetic import plot_history as plot_history_ga, plot_states as plot_states_ga
+from algorithms.hill_climbing import steepest_ascent, stochastic, sideways_move, random_restart
+from algorithms.plotHillClimbing import plot_history as plot_history_hc, plot_states as plot_states_hc
 
 HERE = os.path.dirname(os.path.abspath(__file__))
 OUT = os.path.join(HERE, "..", "output")
@@ -28,6 +30,15 @@ CONTROL_POPULATION = 50
 CONTROL_ITERATION = 150
 POPULATIONS = [20, 50, 100]
 ITERATIONS = [50, 100, 200]
+
+#Variabel Hill Climbing
+HC_VARIANTS = [
+    ("steepest_ascent", steepest_ascent, {}),
+    ("stochastic", stochastic, {}),
+    ("sideways_move", sideways_move, {}),
+    ("random_restart", random_restart, {}),
+]
+
 
 #SIMULATED ANNEALING
 def run_sa(problem, obj, out_dir):
@@ -45,6 +56,7 @@ def run_sa(problem, obj, out_dir):
                      res["iterations"], res["duration_s"]))
     return rows
 
+
 def run_sa_consistency(problem, obj):
     print(f"{'seed':>4} | {'awal':>8} | {'akhir':>5} | {'valid':>5} | "
           f"{'iter':>5} | {'durasi':>6}")
@@ -56,11 +68,11 @@ def run_sa_consistency(problem, obj):
         print(f"{seed:>4} | {res['initial_value']:>8} | {res['final_value']:>5} | "
               f"{str(res['final_valid']):>5} | {res['iterations']:>5} | "
               f"{res['duration_s']:>5.2f}s")
-
     mean = sum(results) / len(results)
     std = (sum((v - mean) ** 2 for v in results) / len(results)) ** 0.5
     print(f"\nMin: {min(results)}, Max: {max(results)}, "
           f"Mean: {mean:.1f}, Std: {std:.2f}")
+
 
 def run_sa_alpha(problem, obj):
     print(f"{'alpha':>7} | {'s0':>4} | {'s1':>4} | {'s2':>4} | "
@@ -79,6 +91,7 @@ def run_sa_alpha(problem, obj):
               f"{max(scores):>4} | {sum(scores)/3:>5.1f} | "
               f"{sum(iters)/3:>8.0f} | {sum(durs)/3:>6.2f}s")
 
+
 def run_sa_t0(problem, obj):
     print(f"{'t0':>6} | {'s0':>4} | {'s1':>4} | {'s2':>4} | "
           f"{'max':>4} | {'avg':>5} | {'dur_avg':>7}")
@@ -91,6 +104,7 @@ def run_sa_t0(problem, obj):
             durs.append(res['duration_s'])
         print(f"{t0:>6} | {scores[0]:>4} | {scores[1]:>4} | {scores[2]:>4} | "
               f"{max(scores):>4} | {sum(scores)/3:>5.1f} | {sum(durs)/3:>6.2f}s")
+
 
 def run_sa_scaling():
     print(f"{'dataset':>18} | {'seed':>4} | {'awal':>8} | {'akhir':>5} | "
@@ -105,12 +119,12 @@ def run_sa_scaling():
                   f"{res['initial_value']:>8} | {res['final_value']:>5} | "
                   f"{str(res['final_valid']):>5} | {res['duration_s']:>5.2f}s")
 
+
 #GENETIC ALGORITHM
 def run_ga(problem, out_dir):
     """Menjalankan Genetic Algorithm"""
     #Kelompok A: Jumlah populasi sebagai kontrol, iterasi bervariasi
     kelA = [(CONTROL_POPULATION, iteration) for iteration in ITERATIONS]
-
     #Kelompok B: Jumlah iterasi tetap, populasi bervariasi
     kelB = [(population, CONTROL_ITERATION) for population in POPULATIONS]
 
@@ -131,7 +145,7 @@ def run_ga(problem, out_dir):
             base = os.path.join(folder, f"run{run}")
             save_json(result, base + ".json")
             plot_states_ga(problem, result, base + "_states.png")
-            fig = plot_history(result)
+            fig = plot_history_ga(result)
             extra = result["extra"]
             if min(extra["max_history"] + extra["average_history"]) < -1000:
                 fig.axes[0].set_yscale("symlog", linthresh=100)
@@ -143,20 +157,61 @@ def run_ga(problem, out_dir):
     rows = []
     for (population, iteration), results in all_results.items():
         for run, result in enumerate(results):
-            rows.append((f"Genetic Algorithm (pop={population}, it={iteration})", run, result["initial_value"],
-                         result["final_value"], result["final_valid"], result["iterations"], result["duration_s"]))
+            rows.append((f"Genetic Algorithm (pop={population}, it={iteration})", run,
+                         result["initial_value"], result["final_value"],
+                         result["final_valid"], result["iterations"], result["duration_s"]))
     invalid = [f"{r[0]} run {r[1]}" for r in rows if not r[4]]
     if invalid:
         print("\nHasil akhir Tidak valid pada:", ", ".join(invalid))
     return rows
 
+
+#HILL CLIMBING
+def run_hc(problem, obj, out_dir):
+    """Menjalankan 4 varian Hill-climbing: Steepest Ascent, Stochastic, Sideways Move, Random Restart."""
+    rows = []
+    for variant_name, fn, kwargs in HC_VARIANTS:
+        pretty = variant_name.replace("_", " ").title()
+        print(f"\n---- HC: {pretty} ----")
+        folder = os.path.join(out_dir, variant_name)
+        os.makedirs(folder, exist_ok=True)
+
+        for run in range(N_RUNS):
+            # seed = run supaya tiap run deterministik dan hasilnya bisa diulang
+            res = fn(problem, obj, seed=run, **kwargs)
+            extra = res.get("extra", {}) or {}
+            # ringkasan tambahan sesuai varian (sesuai spek dosen)
+            tambahan = ""
+            if variant_name == "stochastic":
+                tambahan = f" max_fail={extra.get('max_fail', '-')}"
+            elif variant_name == "sideways_move":
+                tambahan = (f" sideways_count={extra.get('sideways_count', '-')}"
+                            f" max_sideways={extra.get('max_sideways', '-')}")
+            elif variant_name == "random_restart":
+                tambahan = (f" max_restart={extra.get('max_restart', '-')}"
+                            f" iter_per_restart={extra.get('iterations_per_restart', '-')}")
+            print(f"  [{pretty} run {run}] {summary(res)}{tambahan}")
+
+            base = os.path.join(folder, f"run{run}")
+            save_json(res, base + ".json")
+            plot_history_hc(res, base + "_obj.png")
+            plot_states_hc(problem, res, base + "_states.png")
+
+            algo_label = f"Hill-climbing ({pretty})"
+            rows.append((algo_label, run, res["initial_value"],
+                         res["final_value"], res["final_valid"],
+                         res["iterations"], res["duration_s"]))
+    return rows
+
+
 #MAIN
 def main():
     parser = argparse.ArgumentParser(description="Runner algoritma local search")
-    parser.add_argument("--algo", nargs="+", choices=["sa", "ga"], default=["sa", "ga"],
+    parser.add_argument("--algo", nargs="+", choices=["sa", "ga", "hc"],
+                        default=["sa", "ga", "hc"],
                         help="algoritma yang dijalankan (default: semua)")
     parser.add_argument("--dataset", default=DATA_DEFAULT, help="Path dataset JSON")
-    parser.add_argument("--extra", nargs="+", choices=["consistency", "alpha", "scaling"], default=[],
+    parser.add_argument("--extra", nargs="+", choices=["consistency", "alpha", "t0", "scaling"], default=[],
                         help="eksperimen tambahan SA (opsional)")
     args = parser.parse_args()
 
@@ -177,6 +232,12 @@ def main():
         os.makedirs(d, exist_ok=True)
         rows.extend(run_sa(problem, obj, d))
 
+    if "hc" in args.algo:
+        print("\n==== Hill Climbing ====")
+        d = os.path.join(OUT, "hc")
+        os.makedirs(d, exist_ok=True)
+        rows.extend(run_hc(problem, obj, d))
+
     if "ga" in args.algo:
         print("\n==== Genetic Algorithm ====")
         d = os.path.join(OUT, "ga")
@@ -194,9 +255,13 @@ def main():
     if "alpha" in args.extra:
         print(f"\n==== SA: Pengaruh Alpha (dataset={os.path.basename(args.dataset)}) ====")
         run_sa_alpha(problem, obj)
+    if "t0" in args.extra:
+        print(f"\n==== SA: Pengaruh T0 (dataset={os.path.basename(args.dataset)}) ====")
+        run_sa_t0(problem, obj)
     if "scaling" in args.extra:
         print("\n==== SA: Skalabilitas (small vs medium) ====")
         run_sa_scaling()
+
 
 if __name__ == "__main__":
     main()
