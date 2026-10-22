@@ -18,7 +18,7 @@ def plot_history(result, path=None):
         f"Iterations={result['iterations']}\n"
         f"Durasi pencarian={result['duration_s']} detik",
     )
-    plt.legend()
+    plt.legend(loc="lower right")
 
     if path:
         plt.savefig(path, dpi=120)
@@ -123,20 +123,3 @@ def plot_states(problem, result, path=None):
     else:
         plt.show()
     return fig
-
-def print_result(result, label=None):
-    """Mencetak hasil Genetic Algorithm"""
-    extra = result["extra"]
-    print("=" * 60)
-    print(f"{label or 'Genetic Algorithm'} | seed={extra['seed']}")
-    print("=" * 60)
-    print("\n=== STATE AWAL ===")
-    print(result["initial_render"])
-    print(f"Objective awal  : {result['initial_value']}")
-    print("\n=== STATE AKHIR ===")
-    print(result["final_render"])
-    print(f"Objective akhir : {result['final_value']}")
-    print(f"Valid           : {'Ya' if result['final_valid'] else 'TIDAK'}")
-    print(f"Jumlah populasi : {extra['population']}")
-    print(f"Banyak iterasi  : {result['iterations']}")
-    print(f"Durasi pencarian: {result['duration_s']} detik\n")
