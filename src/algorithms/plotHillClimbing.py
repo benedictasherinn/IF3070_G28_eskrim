@@ -41,6 +41,7 @@ def draw_state(problem, placements, ax, title):
     ax.grid(True, color="#cccccc", linewidth=0.5)
 
     occupancy = {}
+    cells_of = {}
 
     for vid in problem.ids:
         pl = placements.get(vid)
@@ -49,6 +50,9 @@ def draw_state(problem, placements, ax, title):
 
         x, y, ori = pl
         c, r = problem.by[vid].footprint(ori)
+        cells_of[vid] = [(x + dx, y + dy) for dy in range(r) for dx in range(c)]
+        for cell in cells_of[vid]:
+            occupancy[cell] = occupancy.get(cell, 0) + 1
 
         ax.add_patch(Rectangle(
             (x, y), c, r,
@@ -56,16 +60,6 @@ def draw_state(problem, placements, ax, title):
             edgecolor="black",
             linewidth=0.8
         ))
-
-        ax.text(
-            x + c / 2, y + r / 2, vid,
-            ha="center", va="center", fontsize=8
-        )
-
-        for dx in range(c):
-            for dy in range(r):
-                cell = (x + dx, y + dy)
-                occupancy[cell] = occupancy.get(cell, 0) + 1
 
     #red=overlap
     for (cx, cy), count in occupancy.items():
@@ -78,16 +72,39 @@ def draw_state(problem, placements, ax, title):
                 hatch="///"
             ))
 
+    #kendaraan yang bertumpuk ditandai nomor biar namanya gak tabrakan
+    numbers = {vid: i + 1 for i, vid in enumerate(problem.ids)}
+    stacked = [vid for vid, cells in cells_of.items() if any(occupancy[cell] > 1 for cell in cells)]
+    used = set()
+    for vid, cells in cells_of.items():
+        x, y, ori = placements[vid]
+        c, r = problem.by[vid].footprint(ori)
+        if vid not in stacked:
+            ax.text(
+                x + c / 2, y + r / 2, vid,
+                ha="center", va="center", fontsize=8
+            )
+            continue
+        inside = [cl for cl in cells if 0 <= cl[0] < sh.cols and 0 <= cl[1] < sh.rows] or cells
+        cell = next((cl for cl in inside if cl not in used), inside[0])
+        used.add(cell)
+        ax.text(
+            cell[0] + 0.5, cell[1] + 0.5, str(numbers[vid]),
+            ha="center", va="center", fontsize=7, fontweight="bold",
+            bbox=dict(boxstyle="round,pad=0.15", facecolor="white", edgecolor="black", linewidth=0.5)
+        )
+
     outside = [
         vid for vid in problem.ids
         if placements.get(vid) is None
     ]
 
     label = ", ".join(outside) if outside else "-"
-    ax.set_xlabel(
-        textwrap.fill(f"Di luar kapal: {label}", width=38),
-        fontsize=7
-    )
+    lines = [textwrap.fill(f"Di luar kapal: {label}", width=38, break_on_hyphens=False)]
+    if stacked:
+        stacked_label = ", ".join(f"{numbers[vid]}={vid}" for vid in stacked)
+        lines.append(textwrap.fill(f"Bertumpuk: {stacked_label}", width=38, break_on_hyphens=False))
+    ax.set_xlabel("\n".join(lines), fontsize=7)
     ax.set_title(title, fontsize=9)
 
 
@@ -105,10 +122,10 @@ def plot_states(problem, result, path=None):
     draw_state(problem, result["initial_placements"], axes[0], t_init)
     draw_state(problem, result["final_placements"], axes[1], t_final)
 
-    fig.suptitle(
-        f"{result['algorithm']} | iterasi={result['iterations']}",
-        fontsize=11
-    )
+    suptitle = f"{result['algorithm']} | iterasi={result['iterations']}"
+    if "best_restart" in result["extra"]:    #random restart: state akhir dari pendakian terbaik
+        suptitle += f" | state akhir dari pendakian ke-{result['extra']['best_restart'] + 1}"
+    fig.suptitle(suptitle, fontsize=11)
 
     plt.tight_layout()
     if path:

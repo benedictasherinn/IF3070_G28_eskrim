@@ -67,6 +67,7 @@ def stochastic(problem, objective, seed=0, max_iter=20000, max_fail=1000):
 def random_restart(problem, objective, seed=0, max_restart=5, max_iter=1000):
     objective_trace = []    #gabungan dr nilai objective semua restart
     iterations_per_restart = []
+    final_per_restart = []
     best = None
     started_at = time.perf_counter()
     for restart in range(max_restart + 1):
@@ -75,11 +76,13 @@ def random_restart(problem, objective, seed=0, max_restart=5, max_iter=1000):
             initial = State(problem, res["initial_placements"])
         objective_trace.extend(res["history"])
         iterations_per_restart.append(res["iterations"])
+        final_per_restart.append(res["final_value"])
         if best is None or res["final_value"] > best["final_value"]:
-            best = res
+            best, best_restart = res, restart
     final = State(problem, best["final_placements"])
     return make_result("random restart", objective, initial, final, objective_trace, sum(iterations_per_restart), time.perf_counter() - started_at,
-        {"max_restart": max_restart, "iterations_per_restart": iterations_per_restart})
+        {"max_restart": max_restart, "iterations_per_restart": iterations_per_restart,
+         "final_per_restart": final_per_restart, "best_restart": best_restart})
 
 
 def sideways_move(problem, objective, seed=0, max_sideways=50, max_iter=1000):
