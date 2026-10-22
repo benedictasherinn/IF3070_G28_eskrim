@@ -3,6 +3,7 @@ matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 from matplotlib.patches import Rectangle
 import textwrap
+import numpy as np
 
 
 def plot_objective(res, path):
@@ -18,18 +19,25 @@ def plot_objective(res, path):
     plt.close(fig)
 
 
-def plot_acceptance(res, path):
-    """Plot peluang penerimaan e^(dE/T) vs iterasi"""
-    fig, ax = plt.subplots(figsize=(7, 4))
-    ax.plot(res["extra"].get("acceptance_probs", []), linewidth=0.8)
-    ax.set_title("Simulated Annealing: e^(dE/T) vs Iterasi")
-    ax.set_xlabel("Iterasi")
-    ax.set_ylabel("Peluang Penerimaan")
-    ax.grid(True, linewidth=0.3)
-    fig.tight_layout()
-    fig.savefig(path, dpi=130)
-    plt.close(fig)
+def plot_acceptance(res, path, window=200):
+    probs = np.array(res["extra"]["acceptance_probs"])
+    iters = np.arange(len(probs))
+    # moving average
+    kernel = np.ones(window) / window
+    smoothed = np.convolve(probs, kernel, mode="valid")
+    smooth_iters = iters[window-1:]
 
+    plt.figure(figsize=(8, 4))
+    plt.plot(iters, probs, alpha=0.1, color="gray", linewidth=0.3, label="raw")
+    plt.plot(smooth_iters, smoothed, color="blue", linewidth=2, label=f"moving avg (w={window})")
+    plt.title("Simulated Annealing: e^(ΔE/T) vs Iterasi")
+    plt.xlabel("Iterasi")
+    plt.ylabel("Peluang Penerimaan")
+    plt.ylim(-0.05, 1.05)
+    plt.legend()
+    plt.tight_layout()
+    plt.savefig(path, dpi=100)
+    plt.close()
 
 def draw_state(problem, placements, ax, title):
     """Menggambar posisi kendaraan dan overlap pada kapal"""
