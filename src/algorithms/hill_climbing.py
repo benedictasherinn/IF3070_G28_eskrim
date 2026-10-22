@@ -1,7 +1,7 @@
 import random
 import time
 
-from core import random_state, random_neighbor, all_neighbors, make_result
+from core import State, random_state, random_neighbor, all_neighbors, make_result
 
 def best_neighbor(state, objective):
     best, best_value = None, None
@@ -51,3 +51,21 @@ def stochastic(problem, objective, seed=0, max_iter=20000, max_fail=1000):
         objective_trace.append(current_value)
     return make_result("stochastic", objective, initial, current, objective_trace, iteration, time.perf_counter() - started_at,
         {"max_iter": max_iter, "max_fail": max_fail})
+
+
+def random_restart(problem, objective, seed=0, max_restart=5, max_iter=1000):
+    objective_trace = []    #gabungan dr nilai objective semua restart
+    iterations_per_restart = []
+    best = None
+    started_at = time.perf_counter()
+    for restart in range(max_restart + 1):
+        res = steepest_ascent(problem, objective, seed=seed + restart * 1000, max_iter=max_iter)
+        if restart == 0:
+            initial = State(problem, res["initial_placements"])
+        objective_trace.extend(res["history"])
+        iterations_per_restart.append(res["iterations"])
+        if best is None or res["final_value"] > best["final_value"]:
+            best = res
+    final = State(problem, best["final_placements"])
+    return make_result("random restart", objective, initial, final, objective_trace, sum(iterations_per_restart), time.perf_counter() - started_at,
+        {"max_restart": max_restart, "iterations_per_restart": iterations_per_restart})
