@@ -11515,7 +11515,7 @@
     305
   ],
   "iterations": 11508,
-  "duration_s": 1.5351,
+  "duration_s": 0.6097,
   "extra": {
     "acceptance_probs": [
       1.0,
@@ -22730,7 +22730,7 @@
       0.0,
       1.0,
       0.0,
-      0.0,
+      5e-324,
       1.0,
       0.0,
       1.0,
@@ -34539,8 +34539,6 @@
     ],
     "stuck_count": 40
   },
-  "initial_render": ".......HH.\n....SSSS..\n..OOSSSS..\n..OO.JJJJJ\n..OO.JJJJJ\n..OOKKKK..\n..OOKKKK..\n..OO......\n..........\nDDD..AA...\nDDD..AA...\nDDD..AA...\nDDD..AA...\nDDDCCCCC..\nDDDCCCCC..\n......LLL.\n..QQIILLL.\n..QQ......\n..QQ......\n..QQ......\nDi dalam: Avanza, Fortuner, Truk-Engkel, Motor-1, Motor-2, Pickup, Innova, Agya, Hiace, Sedan, Jeep\nDi luar : Brio, Pajero, Xpander, Bus-Mini, Elf, Ertiga, Truk-Box, Tronton",
-  "final_render": "..........\nKKKK......\nKKKK......\n.....BBB.I\n.....BBB.I\n....CCSSSS\n.QQ.CCSSSS\n.QQ.CC..EE\n.QQ.CC..EE\n.QQ.CC..EE\n........EE\n........EE\n..FF......\n..FF....OO\n..FF....OO\n..FF....OO\n.HH.....OO\nMMMMMM..OO\nMMMMMM..OO\nMMMMMM....\nDi dalam: Brio, Fortuner, Pajero, Xpander, Motor-1, Motor-2, Innova, Elf, Hiace, Sedan, Jeep\nDi luar : Avanza, Truk-Engkel, Bus-Mini, Pickup, Agya, Ertiga, Truk-Box, Tronton",
   "initial_placements": {
     "Avanza": [
       5,
