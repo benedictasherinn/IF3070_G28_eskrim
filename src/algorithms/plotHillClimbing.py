@@ -8,7 +8,8 @@ def plot_history(result, path=None):
     iterations = range(len(history))
 
     fig = plt.figure()
-    plt.plot(iterations, history, marker="o", label="Objective")
+    marker = "o" if len(history) <= 50 else None    #titik cuma kalau datanya sedikit
+    plt.plot(iterations, history, marker=marker, label="Objective")
 
     plt.xlabel("Iteration")
     plt.ylabel("Objective Value")
