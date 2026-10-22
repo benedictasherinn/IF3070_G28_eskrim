@@ -1,0 +1,130 @@
+{
+  "algorithm": "steepest ascent",
+  "initial_value": 271,
+  "final_value": 294,
+  "final_valid": true,
+  "history": [
+    271,
+    287,
+    294
+  ],
+  "iterations": 2,
+  "duration_s": 0.6526,
+  "extra": {},
+  "initial_placements": {
+    "Avanza": [
+      6,
+      8,
+      "H"
+    ],
+    "Brio": null,
+    "Fortuner": null,
+    "Truk-Engkel": [
+      4,
+      12,
+      "H"
+    ],
+    "Pajero": null,
+    "Xpander": [
+      2,
+      9,
+      "V"
+    ],
+    "Bus-Mini": [
+      3,
+      15,
+      "H"
+    ],
+    "Motor-1": [
+      6,
+      5,
+      "H"
+    ],
+    "Motor-2": [
+      8,
+      3,
+      "V"
+    ],
+    "Pickup": [
+      5,
+      0,
+      "H"
+    ],
+    "Innova": null,
+    "Agya": null,
+    "Elf": null,
+    "Ertiga": null,
+    "Hiace": [
+      0,
+      2,
+      "H"
+    ],
+    "Truk-Box": null,
+    "Sedan": null,
+    "Tronton": null,
+    "Jeep": [
+      4,
+      7,
+      "V"
+    ]
+  },
+  "final_placements": {
+    "Avanza": null,
+    "Brio": null,
+    "Fortuner": null,
+    "Truk-Engkel": [
+      4,
+      12,
+      "H"
+    ],
+    "Pajero": [
+      4,
+      7,
+      "V"
+    ],
+    "Xpander": [
+      2,
+      9,
+      "V"
+    ],
+    "Bus-Mini": [
+      3,
+      15,
+      "H"
+    ],
+    "Motor-1": [
+      6,
+      5,
+      "H"
+    ],
+    "Motor-2": [
+      8,
+      3,
+      "V"
+    ],
+    "Pickup": [
+      5,
+      0,
+      "H"
+    ],
+    "Innova": [
+      6,
+      8,
+      "H"
+    ],
+    "Agya": null,
+    "Elf": null,
+    "Ertiga": null,
+    "Hiace": [
+      0,
+      2,
+      "H"
+    ],
+    "Truk-Box": null,
+    "Sedan": null,
+    "Tronton": null,
+    "Jeep": null
+  },
+  "initial_render": ".....JJJJJ\n.....JJJJJ\nOOOOOO....\nOOOOOO..I.\n........I.\n......HH..\n..........\n....SS....\n....SSAAAA\n..FFSSAAAA\n..FFSS....\n..FF......\n..FFDDDDDD\n....DDDDDD\n....DDDDDD\n...GGGGGGG\n...GGGGGGG\n...GGGGGGG\n..........\n..........\nDi dalam: Avanza, Truk-Engkel, Xpander, Bus-Mini, Motor-1, Motor-2, Pickup, Hiace, Jeep\nDi luar : Brio, Fortuner, Pajero, Innova, Agya, Elf, Ertiga, Truk-Box, Sedan, Tronton",
+  "final_render": ".....JJJJJ\n.....JJJJJ\nOOOOOO....\nOOOOOO..I.\n........I.\n......HH..\n..........\n....EE....\n....EEKKKK\n..FFEEKKKK\n..FFEE....\n..FFEE....\n..FFDDDDDD\n....DDDDDD\n....DDDDDD\n...GGGGGGG\n...GGGGGGG\n...GGGGGGG\n..........\n..........\nDi dalam: Truk-Engkel, Pajero, Xpander, Bus-Mini, Motor-1, Motor-2, Pickup, Innova, Hiace\nDi luar : Avanza, Brio, Fortuner, Agya, Elf, Ertiga, Truk-Box, Sedan, Tronton, Jeep"
+}
