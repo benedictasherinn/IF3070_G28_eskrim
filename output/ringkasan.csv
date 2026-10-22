@@ -1,0 +1,4 @@
+algoritma,run,nilai_awal,nilai_akhir,valid,iterasi,durasi_s
+Simulated Annealing,0,293,305,True,11508,0.6006
+Simulated Annealing,1,275,302,True,11508,0.6068
+Simulated Annealing,2,271,300,True,11508,0.6099
