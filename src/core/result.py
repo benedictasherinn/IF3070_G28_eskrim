@@ -1,6 +1,11 @@
-import json
+﻿import json
 import os
 from .objective import is_valid
+
+
+def _serialize_placements(state):
+    """Konversi state.p ke dict JSON-friendly (tuple -> list)."""
+    return {k: list(v) if v is not None else None for k, v in state.p.items()}
 
 
 def make_result(algorithm, objective, initial, final, history, iterations,
@@ -10,12 +15,12 @@ def make_result(algorithm, objective, initial, final, history, iterations,
         "initial_value": objective.value(initial),
         "final_value": objective.value(final),
         "final_valid": is_valid(final),
-        "history": history,     # nilai objective per iterasi
+        "history": history,
         "iterations": iterations,
         "duration_s": round(duration, 4),
         "extra": extra or {},    # data khusus algoritma
-        "initial_placements": dict(initial.p),
-        "final_placements": dict(final.p),
+        "initial_placements": _serialize_placements(initial),
+        "final_placements": _serialize_placements(final),
         "initial_render": initial.render(),
         "final_render": final.render(),
     }
@@ -30,3 +35,5 @@ def save_json(res, path):
     os.makedirs(os.path.dirname(path), exist_ok=True)
     with open(path, "w") as f:
         json.dump(res, f, indent=2)
+
+
