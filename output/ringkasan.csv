@@ -1,4 +1,22 @@
 algoritma,run,nilai_awal,nilai_akhir,valid,iterasi,durasi_s
-Simulated Annealing,0,293,305,True,11508,0.6006
-Simulated Annealing,1,275,302,True,11508,0.6068
-Simulated Annealing,2,271,300,True,11508,0.6099
+Simulated Annealing,0,293,305,True,11508,0.6097
+Simulated Annealing,1,275,302,True,11508,0.6069
+Simulated Annealing,2,271,300,True,11508,0.6204
+"Genetic Algorithm (pop=50, it=50)",0,296,304,True,50,0.2746
+"Genetic Algorithm (pop=50, it=50)",1,298,302,True,50,0.288
+"Genetic Algorithm (pop=50, it=50)",2,301,304,True,50,0.281
+"Genetic Algorithm (pop=50, it=100)",0,296,305,True,100,0.5208
+"Genetic Algorithm (pop=50, it=100)",1,298,302,True,100,0.537
+"Genetic Algorithm (pop=50, it=100)",2,301,304,True,100,0.5427
+"Genetic Algorithm (pop=50, it=200)",0,296,305,True,200,1.0104
+"Genetic Algorithm (pop=50, it=200)",1,298,303,True,200,1.0519
+"Genetic Algorithm (pop=50, it=200)",2,301,304,True,200,1.0549
+"Genetic Algorithm (pop=20, it=150)",0,295,305,True,150,0.3113
+"Genetic Algorithm (pop=20, it=150)",1,297,298,True,150,0.296
+"Genetic Algorithm (pop=20, it=150)",2,301,304,True,150,0.3162
+"Genetic Algorithm (pop=50, it=150)",0,296,305,True,150,0.7645
+"Genetic Algorithm (pop=50, it=150)",1,298,303,True,150,0.8166
+"Genetic Algorithm (pop=50, it=150)",2,301,304,True,150,0.7868
+"Genetic Algorithm (pop=100, it=150)",0,301,304,True,150,1.6604
+"Genetic Algorithm (pop=100, it=150)",1,301,305,True,150,1.6086
+"Genetic Algorithm (pop=100, it=150)",2,301,305,True,150,1.582
